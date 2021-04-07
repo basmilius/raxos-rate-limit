@@ -63,7 +63,7 @@ class RateLimiter
         $key = $this->getKey($key);
         $operations = $this->store->getOperations($key);
 
-        if ($increment && $operations < $this->rate->getQuota()) {
+        if ($increment && $operations <= $this->rate->getQuota()) {
             $this->store->updateOperations($key, $this->rate->getInterval());
             $operations += 1;
         }

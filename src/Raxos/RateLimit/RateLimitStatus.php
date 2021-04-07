@@ -72,7 +72,7 @@ final class RateLimitStatus
      */
     public final function isExceeded(): bool
     {
-        return $this->operations >= $this->rate->getQuota();
+        return $this->operations > $this->rate->getQuota();
     }
 
 }
