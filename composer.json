@@ -13,7 +13,7 @@
 	],
 	"autoload": {
 		"psr-4": {
-			"Raxos\\Http\\": "src/Raxos/RateLimit"
+			"Raxos\\RateLimit\\": "src/Raxos/RateLimit"
 		}
 	},
 	"config": {
