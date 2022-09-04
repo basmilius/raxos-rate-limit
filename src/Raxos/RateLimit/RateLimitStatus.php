@@ -23,44 +23,12 @@ final class RateLimitStatus
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.0
      */
-    public function __construct(private int $operations, private Rate $rate, private int $ttl)
+    public function __construct(
+        public readonly int $operations,
+        public readonly Rate $rate,
+        public readonly int $ttl
+    )
     {
-    }
-
-    /**
-     * Gets the current operations.
-     *
-     * @return int
-     * @author Bas Milius <bas@mili.us>
-     * @since 1.0.0
-     */
-    public final function getOperations(): int
-    {
-        return $this->operations;
-    }
-
-    /**
-     * Gets the rate.
-     *
-     * @return Rate
-     * @author Bas Milius <bas@mili.us>
-     * @since 1.0.0
-     */
-    public final function getRate(): Rate
-    {
-        return $this->rate;
-    }
-
-    /**
-     * Gets the ttl.
-     *
-     * @return int
-     * @author Bas Milius <bas@mili.us>
-     * @since 1.0.0
-     */
-    public final function getTTL(): int
-    {
-        return $this->ttl;
     }
 
     /**
@@ -72,7 +40,7 @@ final class RateLimitStatus
      */
     public final function isExceeded(): bool
     {
-        return $this->operations > $this->rate->getQuota();
+        return $this->operations > $this->rate->quota;
     }
 
 }

@@ -23,7 +23,7 @@ use function max;
 abstract class RateLimitMiddleware extends Middleware
 {
 
-    protected RateLimiter $rateLimiter;
+    protected readonly RateLimiter $rateLimiter;
 
     /**
      * RateLimitMiddleware constructor.
@@ -51,10 +51,10 @@ abstract class RateLimitMiddleware extends Middleware
     {
         $status = $this->rateLimiter->getStatus($this->getKey());
 
-        $this->header('RateLimit-Limit', (string)$status->getRate()->getQuota());
-        $this->header('RateLimit-Remaining', (string)max(0, $status->getRate()->getQuota() - $status->getOperations()));
-        $this->header('RateLimit-Reset', (string)$status->getTTL());
-        $this->header('Retry-After', (string)$status->getTTL());
+        $this->header('RateLimit-Limit', (string)$status->rate->quota);
+        $this->header('RateLimit-Remaining', (string)max(0, $status->rate->quota - $status->operations));
+        $this->header('RateLimit-Reset', (string)$status->ttl);
+        $this->header('Retry-After', (string)$status->ttl);
 
         if (!$status->isExceeded()) {
             return true;

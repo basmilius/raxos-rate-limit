@@ -25,7 +25,10 @@ class Rate
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.0
      */
-    public final function __construct(private int $interval, private int $quota)
+    public final function __construct(
+        public readonly int $interval,
+        public readonly int $quota
+    )
     {
         if ($this->interval <= 0) {
             throw new RuntimeException('Interval must be greather than 0.', RuntimeException::ERR_INVALID_PARAMETER);
@@ -34,30 +37,6 @@ class Rate
         if ($this->quota <= 0) {
             throw new RuntimeException('Quota must be greather than 0.', RuntimeException::ERR_INVALID_PARAMETER);
         }
-    }
-
-    /**
-     * Gets the interval in seconds.
-     *
-     * @return int
-     * @author Bas Milius <bas@mili.us>
-     * @since 1.0.0
-     */
-    public final function getInterval(): int
-    {
-        return $this->interval;
-    }
-
-    /**
-     * Gets the quota per rate.
-     *
-     * @return int
-     * @author Bas Milius <bas@mili.us>
-     * @since 1.0.0
-     */
-    public final function getQuota(): int
-    {
-        return $this->quota;
     }
 
     /**

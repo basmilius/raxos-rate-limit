@@ -25,7 +25,10 @@ class RateLimiter
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.0
      */
-    public function __construct(protected Rate $rate, protected RateLimiterStoreInterface $store)
+    public function __construct(
+        protected readonly Rate $rate,
+        protected readonly RateLimiterStoreInterface $store
+    )
     {
     }
 
@@ -63,8 +66,8 @@ class RateLimiter
         $key = $this->getKey($key);
         $operations = $this->store->getOperations($key);
 
-        if ($increment && $operations <= $this->rate->getQuota()) {
-            $this->store->updateOperations($key, $this->rate->getInterval());
+        if ($increment && $operations <= $this->rate->quota) {
+            $this->store->updateOperations($key, $this->rate->interval);
             $operations += 1;
         }
 
@@ -82,7 +85,7 @@ class RateLimiter
      */
     protected function getKey(string $key): string
     {
-        $interval = $this->rate->getInterval();
+        $interval = $this->rate->interval;
 
         return "{$key}:{$interval}";
     }
