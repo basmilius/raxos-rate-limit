@@ -10,7 +10,7 @@ namespace Raxos\RateLimit;
  * @package Raxos\RateLimit
  * @since 1.0.0
  */
-final class RateLimitStatus
+final readonly class RateLimitStatus
 {
 
     /**
@@ -24,9 +24,9 @@ final class RateLimitStatus
      * @since 1.0.0
      */
     public function __construct(
-        public readonly int $operations,
-        public readonly Rate $rate,
-        public readonly int $ttl
+        public int $operations,
+        public Rate $rate,
+        public int $ttl
     )
     {
     }

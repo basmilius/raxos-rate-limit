@@ -13,7 +13,7 @@ use Raxos\RateLimit\Store\RateLimiterStoreInterface;
  * @package Raxos\RateLimit
  * @since 1.0.0
  */
-class RateLimiter
+readonly class RateLimiter
 {
 
     /**
@@ -26,8 +26,8 @@ class RateLimiter
      * @since 1.0.0
      */
     public function __construct(
-        protected readonly Rate $rate,
-        protected readonly RateLimiterStoreInterface $store
+        protected Rate $rate,
+        protected RateLimiterStoreInterface $store
     )
     {
     }

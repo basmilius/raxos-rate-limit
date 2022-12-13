@@ -3,8 +3,7 @@ declare(strict_types=1);
 
 namespace Raxos\RateLimit\Store;
 
-use Raxos\Cache\Redis\RedisCache;
-use Raxos\Cache\Redis\RedisTaggedCache;
+use Raxos\Cache\Redis\{RedisCache, RedisCacheException, RedisTaggedCache};
 use function ceil;
 use function max;
 
@@ -15,7 +14,7 @@ use function max;
  * @package Raxos\RateLimit\Store
  * @since 1.0.0
  */
-class RedisRateLimiterStore implements RateLimiterStoreInterface
+readonly class RedisRateLimiterStore implements RateLimiterStoreInterface
 {
 
     /**
@@ -28,14 +27,15 @@ class RedisRateLimiterStore implements RateLimiterStoreInterface
      * @since 1.0.0
      */
     public function __construct(
-        protected readonly RedisCache|RedisTaggedCache $redis,
-        protected readonly string $keyBase = 'rateLimit:'
+        protected RedisCache|RedisTaggedCache $redis,
+        protected string $keyBase = 'rateLimit:'
     )
     {
     }
 
     /**
      * {@inheritdoc}
+     * @throws RedisCacheException
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.0
      */
@@ -46,6 +46,7 @@ class RedisRateLimiterStore implements RateLimiterStoreInterface
 
     /**
      * {@inheritdoc}
+     * @throws RedisCacheException
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.0
      */
@@ -59,6 +60,7 @@ class RedisRateLimiterStore implements RateLimiterStoreInterface
 
     /**
      * {@inheritdoc}
+     * @throws RedisCacheException
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.0
      */

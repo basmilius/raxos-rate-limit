@@ -12,7 +12,7 @@ use Raxos\RateLimit\Error\RuntimeException;
  * @package Raxos\RateLimit
  * @since 1.0.0
  */
-class Rate
+readonly class Rate
 {
 
     /**
@@ -26,16 +26,16 @@ class Rate
      * @since 1.0.0
      */
     public final function __construct(
-        public readonly int $interval,
-        public readonly int $quota
+        public int $interval,
+        public int $quota
     )
     {
         if ($this->interval <= 0) {
-            throw new RuntimeException('Interval must be greather than 0.', RuntimeException::ERR_INVALID_PARAMETER);
+            throw new RuntimeException('Interval must be greater than 0.', RuntimeException::ERR_INVALID_PARAMETER);
         }
 
         if ($this->quota <= 0) {
-            throw new RuntimeException('Quota must be greather than 0.', RuntimeException::ERR_INVALID_PARAMETER);
+            throw new RuntimeException('Quota must be greater than 0.', RuntimeException::ERR_INVALID_PARAMETER);
         }
     }
 
