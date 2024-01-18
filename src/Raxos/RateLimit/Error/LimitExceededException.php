@@ -13,7 +13,7 @@ namespace Raxos\RateLimit\Error;
 final class LimitExceededException extends RateLimitException
 {
 
-    public const ERR_EXCEEDED = 1;
-    public const ERR_BLOCKED = 2;
+    public const int ERR_EXCEEDED = 1;
+    public const int ERR_BLOCKED = 2;
 
 }

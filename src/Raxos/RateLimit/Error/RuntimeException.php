@@ -13,6 +13,6 @@ namespace Raxos\RateLimit\Error;
 final class RuntimeException extends RateLimitException
 {
 
-    public const ERR_INVALID_PARAMETER = 1;
+    public const int ERR_INVALID_PARAMETER = 1;
 
 }
