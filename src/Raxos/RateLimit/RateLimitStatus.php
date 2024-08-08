@@ -13,6 +13,8 @@ namespace Raxos\RateLimit;
 final readonly class RateLimitStatus
 {
 
+    public bool $exceeded;
+
     /**
      * RateLimitStatus constructor.
      *
@@ -29,18 +31,7 @@ final readonly class RateLimitStatus
         public int $ttl
     )
     {
-    }
-
-    /**
-     * Returns TRUE if the rate limit is exceeded.
-     *
-     * @return bool
-     * @author Bas Milius <bas@mili.us>
-     * @since 1.0.0
-     */
-    public final function isExceeded(): bool
-    {
-        return $this->operations > $this->rate->quota;
+        $this->exceeded = $this->operations > $this->rate->quota;
     }
 
 }

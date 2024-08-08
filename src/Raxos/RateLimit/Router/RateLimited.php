@@ -3,60 +3,62 @@ declare(strict_types=1);
 
 namespace Raxos\RateLimit\Router;
 
-use Raxos\RateLimit\Rate;
-use Raxos\RateLimit\RateLimiter;
-use Raxos\RateLimit\RateLimitStatus;
+use Raxos\RateLimit\{Rate, RateLimiter, RateLimitStatus};
 use Raxos\RateLimit\Store\RateLimiterStoreInterface;
+use Raxos\Router\Attribute\Injected;
 use Raxos\Router\Effect\Effect;
-use Raxos\Router\Middleware\Middleware;
+use Raxos\Router\MiddlewareInterface;
 use Raxos\Router\Response\Response;
 use Raxos\Router\Router;
 use function max;
 
 /**
- * Class RateLimitMiddleware
+ * Class RateLimited
  *
  * @author Bas Milius <bas@mili.us>
  * @package Raxos\RateLimit\Router
- * @since 1.0.0
+ * @since 1.0.16
  */
-abstract class RateLimitMiddleware extends Middleware
+abstract readonly class RateLimited implements MiddlewareInterface
 {
 
-    protected readonly RateLimiter $rateLimiter;
+    #[Injected]
+    public Router $router;
+
+    public RateLimiter $rateLimiter;
 
     /**
-     * RateLimitMiddleware constructor.
+     * RateLimited constructor.
      *
-     * @param Router $router
      * @param Rate $rate
      * @param RateLimiterStoreInterface $store
      *
      * @author Bas Milius <bas@mili.us>
-     * @since 1.0.0
+     * @since 1.0.16
      */
-    public function __construct(Router $router, Rate $rate, RateLimiterStoreInterface $store)
+    public function __construct(
+        public Rate $rate,
+        public RateLimiterStoreInterface $store
+    )
     {
-        parent::__construct($router);
-
-        $this->rateLimiter = new RateLimiter($rate, $store);
+        $this->rateLimiter = new RateLimiter($this->rate, $this->store);
     }
 
     /**
      * {@inheritdoc}
      * @author Bas Milius <bas@mili.us>
-     * @since 1.0.0
+     * @since 1.0.16
      */
     public function handle(): Effect|Response|bool|null
     {
         $status = $this->rateLimiter->getStatus($this->getKey());
 
-        $this->header('RateLimit-Limit', (string)$status->rate->quota);
-        $this->header('RateLimit-Remaining', (string)max(0, $status->rate->quota - $status->operations));
-        $this->header('RateLimit-Reset', (string)$status->ttl);
-        $this->header('Retry-After', (string)$status->ttl);
+        $this->router->responseRegistry->header('RateLimit-Limit', (string)$status->rate->quota);
+        $this->router->responseRegistry->header('RateLimit-Remaining', (string)max(0, $status->rate->quota - $status->operations));
+        $this->router->responseRegistry->header('RateLimit-Reset', (string)$status->ttl);
+        $this->router->responseRegistry->header('Retry-After', (string)$status->ttl);
 
-        if (!$status->isExceeded()) {
+        if (!$status->exceeded) {
             return true;
         }
 
@@ -68,7 +70,7 @@ abstract class RateLimitMiddleware extends Middleware
      *
      * @return string
      * @author Bas Milius <bas@mili.us>
-     * @since 1.0.0
+     * @since 1.0.16
      */
     protected abstract function getKey(): string;
 
@@ -79,7 +81,7 @@ abstract class RateLimitMiddleware extends Middleware
      *
      * @return Response
      * @author Bas Milius <bas@mili.us>
-     * @since 1.0.0
+     * @since 1.0.16
      */
     protected abstract function getResponse(RateLimitStatus $status): Response;
 

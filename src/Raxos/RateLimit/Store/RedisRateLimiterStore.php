@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Raxos\RateLimit\Store;
 
+use JetBrains\PhpStorm\Pure;
 use Raxos\Cache\Redis\{RedisCache, RedisCacheException, RedisTaggedCache};
 use function ceil;
 use function max;
@@ -28,7 +29,7 @@ readonly class RedisRateLimiterStore implements RateLimiterStoreInterface
      */
     public function __construct(
         protected RedisCache|RedisTaggedCache $redis,
-        protected string $keyBase = 'rateLimit:'
+        protected string $keyBase = 'ratelimit:'
     )
     {
     }
@@ -41,7 +42,7 @@ readonly class RedisRateLimiterStore implements RateLimiterStoreInterface
      */
     public function getOperations(string $key): int
     {
-        return (int)$this->redis->get($this->getKey($key)) ?? 0;
+        return (int)($this->redis->get($this->getKey($key)) ?? 0);
     }
 
     /**
@@ -85,6 +86,7 @@ readonly class RedisRateLimiterStore implements RateLimiterStoreInterface
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.0
      */
+    #[Pure]
     protected function getKey(string $key): string
     {
         return $this->keyBase . $key;

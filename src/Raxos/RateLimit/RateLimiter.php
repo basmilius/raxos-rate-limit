@@ -46,7 +46,7 @@ readonly class RateLimiter
     {
         $status = $this->getStatus($key);
 
-        if ($status->isExceeded()) {
+        if ($status->exceeded) {
             throw new LimitExceededException('Rate limit exceeded.', LimitExceededException::ERR_EXCEEDED);
         }
     }
@@ -68,7 +68,7 @@ readonly class RateLimiter
 
         if ($increment && $operations <= $this->rate->quota) {
             $this->store->updateOperations($key, $this->rate->interval);
-            $operations += 1;
+            ++$operations;
         }
 
         return new RateLimitStatus($operations, $this->rate, $this->store->getTTL($key));
