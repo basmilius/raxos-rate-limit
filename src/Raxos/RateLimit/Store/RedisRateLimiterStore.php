@@ -30,9 +30,7 @@ readonly class RedisRateLimiterStore implements RateLimiterStoreInterface
     public function __construct(
         protected RedisCache|RedisTaggedCache $redis,
         protected string $keyBase = 'ratelimit:'
-    )
-    {
-    }
+    ) {}
 
     /**
      * {@inheritdoc}

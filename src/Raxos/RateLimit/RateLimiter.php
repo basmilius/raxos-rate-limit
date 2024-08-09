@@ -28,9 +28,7 @@ readonly class RateLimiter
     public function __construct(
         protected Rate $rate,
         protected RateLimiterStoreInterface $store
-    )
-    {
-    }
+    ) {}
 
     /**
      * Checks if the rate limit is exceeded and throws a LimitExceededException

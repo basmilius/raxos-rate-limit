@@ -12,6 +12,4 @@ use Raxos\Foundation\Error\RaxosException;
  * @package Raxos\RateLimit\Error
  * @since 1.0.0
  */
-abstract class RateLimitException extends RaxosException
-{
-}
+abstract class RateLimitException extends RaxosException {}
