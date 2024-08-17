@@ -45,7 +45,7 @@ readonly class RateLimiter
         $status = $this->getStatus($key);
 
         if ($status->exceeded) {
-            throw new LimitExceededException('Rate limit exceeded.', LimitExceededException::ERR_EXCEEDED);
+            throw LimitExceededException::exceeded();
         }
     }
 

@@ -12,7 +12,7 @@ use Raxos\RateLimit\Error\RuntimeException;
  * @package Raxos\RateLimit
  * @since 1.0.0
  */
-readonly class Rate
+final readonly class Rate
 {
 
     /**
@@ -25,17 +25,17 @@ readonly class Rate
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.0
      */
-    public final function __construct(
+    public function __construct(
         public int $interval,
         public int $quota
     )
     {
         if ($this->interval <= 0) {
-            throw new RuntimeException('Interval must be greater than 0.', RuntimeException::ERR_INVALID_PARAMETER);
+            throw RuntimeException::invalidParameter('Interval must be greater than 0.');
         }
 
         if ($this->quota <= 0) {
-            throw new RuntimeException('Quota must be greater than 0.', RuntimeException::ERR_INVALID_PARAMETER);
+            throw RuntimeException::invalidParameter('Quota must be greater than 0.');
         }
     }
 
@@ -44,14 +44,14 @@ readonly class Rate
      *
      * @param int $quota
      *
-     * @return static
+     * @return self
      * @throws RuntimeException
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.0
      */
-    public static function second(int $quota): static
+    public static function second(int $quota): self
     {
-        return new static(1, $quota);
+        return new self(1, $quota);
     }
 
     /**
@@ -60,14 +60,14 @@ readonly class Rate
      * @param int $n
      * @param int $quota
      *
-     * @return static
+     * @return self
      * @throws RuntimeException
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.0
      */
-    public static function seconds(int $n, int $quota): static
+    public static function seconds(int $n, int $quota): self
     {
-        return new static($n, $quota);
+        return new self($n, $quota);
     }
 
     /**
@@ -75,14 +75,14 @@ readonly class Rate
      *
      * @param int $quota
      *
-     * @return static
+     * @return self
      * @throws RuntimeException
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.0
      */
-    public static function minute(int $quota): static
+    public static function minute(int $quota): self
     {
-        return new static(60, $quota);
+        return new self(60, $quota);
     }
 
     /**
@@ -91,14 +91,14 @@ readonly class Rate
      * @param int $n
      * @param int $quota
      *
-     * @return static
+     * @return self
      * @throws RuntimeException
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.0
      */
-    public static function minutes(int $n, int $quota): static
+    public static function minutes(int $n, int $quota): self
     {
-        return new static($n * 60, $quota);
+        return new self($n * 60, $quota);
     }
 
     /**
@@ -106,14 +106,14 @@ readonly class Rate
      *
      * @param int $quota
      *
-     * @return static
+     * @return self
      * @throws RuntimeException
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.0
      */
-    public static function hour(int $quota): static
+    public static function hour(int $quota): self
     {
-        return new static(3600, $quota);
+        return new self(3600, $quota);
     }
 
     /**
@@ -122,14 +122,14 @@ readonly class Rate
      * @param int $n
      * @param int $quota
      *
-     * @return static
+     * @return self
      * @throws RuntimeException
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.0
      */
-    public static function hours(int $n, int $quota): static
+    public static function hours(int $n, int $quota): self
     {
-        return new static($n * 3600, $quota);
+        return new self($n * 3600, $quota);
     }
 
     /**
@@ -137,14 +137,14 @@ readonly class Rate
      *
      * @param int $quota
      *
-     * @return static
+     * @return self
      * @throws RuntimeException
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.0
      */
-    public static function day(int $quota): static
+    public static function day(int $quota): self
     {
-        return new static(86400, $quota);
+        return new self(86400, $quota);
     }
 
     /**
@@ -153,14 +153,14 @@ readonly class Rate
      * @param int $days
      * @param int $quota
      *
-     * @return static
+     * @return self
      * @throws RuntimeException
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.0
      */
-    public static function days(int $days, int $quota): static
+    public static function days(int $days, int $quota): self
     {
-        return new static($days * 86400, $quota);
+        return new self($days * 86400, $quota);
     }
 
 }

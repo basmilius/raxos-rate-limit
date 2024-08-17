@@ -53,10 +53,10 @@ abstract readonly class RateLimited implements MiddlewareInterface
     {
         $status = $this->rateLimiter->getStatus($this->getKey());
 
-        $this->router->responseRegistry->header('RateLimit-Limit', (string)$status->rate->quota);
-        $this->router->responseRegistry->header('RateLimit-Remaining', (string)max(0, $status->rate->quota - $status->operations));
-        $this->router->responseRegistry->header('RateLimit-Reset', (string)$status->ttl);
-        $this->router->responseRegistry->header('Retry-After', (string)$status->ttl);
+        $this->router->responseRegistry->header('ratelimit-limit', (string)$status->rate->quota);
+        $this->router->responseRegistry->header('ratelimit-remaining', (string)max(0, $status->rate->quota - $status->operations));
+        $this->router->responseRegistry->header('ratelimit-reset', (string)$status->ttl);
+        $this->router->responseRegistry->header('retry-after', (string)$status->ttl);
 
         if (!$status->exceeded) {
             return true;
