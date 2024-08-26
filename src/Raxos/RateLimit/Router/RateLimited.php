@@ -3,13 +3,12 @@ declare(strict_types=1);
 
 namespace Raxos\RateLimit\Router;
 
+use Closure;
 use Raxos\RateLimit\{Rate, RateLimiter, RateLimitStatus};
 use Raxos\RateLimit\Store\RateLimiterStoreInterface;
-use Raxos\Router\Attribute\Injected;
-use Raxos\Router\Effect\Effect;
-use Raxos\Router\MiddlewareInterface;
+use Raxos\Router\Contract\MiddlewareInterface;
+use Raxos\Router\Request\Request;
 use Raxos\Router\Response\Response;
-use Raxos\Router\Router;
 use function max;
 
 /**
@@ -21,9 +20,6 @@ use function max;
  */
 abstract readonly class RateLimited implements MiddlewareInterface
 {
-
-    #[Injected]
-    public Router $router;
 
     public RateLimiter $rateLimiter;
 
@@ -49,20 +45,21 @@ abstract readonly class RateLimited implements MiddlewareInterface
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.16
      */
-    public function handle(): Effect|Response|bool|null
+    public function handle(Request $request, Closure $next): Response
     {
         $status = $this->rateLimiter->getStatus($this->getKey());
 
-        $this->router->responseRegistry->header('ratelimit-limit', (string)$status->rate->quota);
-        $this->router->responseRegistry->header('ratelimit-remaining', (string)max(0, $status->rate->quota - $status->operations));
-        $this->router->responseRegistry->header('ratelimit-reset', (string)$status->ttl);
-        $this->router->responseRegistry->header('retry-after', (string)$status->ttl);
-
-        if (!$status->exceeded) {
-            return true;
+        if ($status->exceeded) {
+            $response = $this->getResponse($status);
+        } else {
+            $response = $next($request);
         }
 
-        return $this->getResponse($status);
+        return $response
+            ->withHeader('ratelimit-limit', (string)$status->rate->quota)
+            ->withHeader('ratelimit-remaining', (string)max(0, $status->rate->quota - $status->operations))
+            ->withHeader('ratelimit-reset', (string)$status->ttl)
+            ->withHeader('retry-after', (string)$status->ttl);
     }
 
     /**
