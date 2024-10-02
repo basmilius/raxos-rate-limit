@@ -72,7 +72,7 @@ abstract readonly class RateLimited implements MiddlewareInterface
     protected abstract function getKey(): string;
 
     /**
-     * Gets the response for when a user is rate limited.
+     * Gets the response for when a user is rate-limited.
      *
      * @param RateLimitStatus $status
      *

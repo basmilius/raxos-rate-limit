@@ -14,7 +14,7 @@ interface RateLimiterStoreInterface
 {
 
     /**
-     * Gets the amount of operations for the given key.
+     * Gets the number of operations for the given key.
      *
      * @param string $key
      *
@@ -36,7 +36,7 @@ interface RateLimiterStoreInterface
     public function getTTL(string $key): int;
 
     /**
-     * Updates the amount of operations for the given key.
+     * Updates the number of operations for the given key.
      *
      * @param string $key
      * @param int $interval
