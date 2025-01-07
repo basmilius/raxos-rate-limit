@@ -26,8 +26,8 @@ readonly class RateLimiter
      * @since 1.0.0
      */
     public function __construct(
-        protected Rate $rate,
-        protected RateLimiterStoreInterface $store
+        public Rate $rate,
+        public RateLimiterStoreInterface $store
     ) {}
 
     /**
