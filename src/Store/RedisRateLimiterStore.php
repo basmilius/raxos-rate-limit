@@ -4,7 +4,8 @@ declare(strict_types=1);
 namespace Raxos\RateLimit\Store;
 
 use JetBrains\PhpStorm\Pure;
-use Raxos\Cache\Redis\{RedisCache, RedisCacheException, RedisTaggedCache};
+use Raxos\Cache\Redis\{RedisCache, RedisTaggedCache};
+use Raxos\Cache\Redis\Error\RedisCacheException;
 use function ceil;
 use function max;
 
