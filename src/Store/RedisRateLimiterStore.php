@@ -5,7 +5,8 @@ namespace Raxos\RateLimit\Store;
 
 use JetBrains\PhpStorm\Pure;
 use Raxos\Cache\Redis\{RedisCache, RedisTaggedCache};
-use Raxos\Cache\Redis\Error\RedisCacheException;
+use Raxos\Contract\Cache\RedisCacheExceptionInterface;
+use Raxos\Contract\RateLimit\RateLimiterStoreInterface;
 use function ceil;
 use function max;
 
@@ -35,7 +36,7 @@ readonly class RedisRateLimiterStore implements RateLimiterStoreInterface
 
     /**
      * {@inheritdoc}
-     * @throws RedisCacheException
+     * @throws RedisCacheExceptionInterface
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.0
      */
@@ -46,7 +47,7 @@ readonly class RedisRateLimiterStore implements RateLimiterStoreInterface
 
     /**
      * {@inheritdoc}
-     * @throws RedisCacheException
+     * @throws RedisCacheExceptionInterface
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.0
      */
@@ -60,7 +61,7 @@ readonly class RedisRateLimiterStore implements RateLimiterStoreInterface
 
     /**
      * {@inheritdoc}
-     * @throws RedisCacheException
+     * @throws RedisCacheExceptionInterface
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.0
      */

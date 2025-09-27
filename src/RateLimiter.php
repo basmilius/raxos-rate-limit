@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Raxos\RateLimit;
 
+use Raxos\Contract\RateLimit\{RateLimiterStoreInterface, RateLimitExceptionInterface};
 use Raxos\RateLimit\Error\LimitExceededException;
-use Raxos\RateLimit\Store\RateLimiterStoreInterface;
 
 /**
  * Class RateLimiter
@@ -31,12 +31,11 @@ readonly class RateLimiter
     ) {}
 
     /**
-     * Checks if the rate limit is exceeded and throws a LimitExceededException
-     * if it is.
+     * Checks if the rate limit is exceeded.
      *
      * @param string $key
      *
-     * @throws LimitExceededException
+     * @throws RateLimitExceptionInterface
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.0
      */
@@ -45,7 +44,7 @@ readonly class RateLimiter
         $status = $this->getStatus($key);
 
         if ($status->exceeded) {
-            throw LimitExceededException::exceeded();
+            throw new LimitExceededException();
         }
     }
 

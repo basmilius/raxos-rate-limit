@@ -7,26 +7,28 @@ use Raxos\Contract\RateLimit\RateLimitExceptionInterface;
 use Raxos\Error\Exception;
 
 /**
- * Class LimitExceededException
+ * Class InvalidParameterException
  *
  * @author Bas Milius <bas@mili.us>
  * @package Raxos\RateLimit\Error
  * @since 2.0.0
  */
-final class LimitExceededException extends Exception implements RateLimitExceptionInterface
+final class InvalidParameterException extends Exception implements RateLimitExceptionInterface
 {
 
     /**
-     * LimitExceededException constructor.
+     * InvalidParameterException constructor.
+     *
+     * @param string $message
      *
      * @author Bas Milius <bas@mili.us>
      * @since 2.0.0
      */
-    public function __construct()
+    public function __construct(string $message)
     {
         parent::__construct(
-            'rate_limit_exceeded',
-            'Rate limit exceeded.'
+            'rate_limit_invalid_parameter',
+            $message
         );
     }
 

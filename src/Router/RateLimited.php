@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace Raxos\RateLimit\Router;
 
 use Closure;
+use Raxos\Contract\RateLimit\RateLimiterStoreInterface;
+use Raxos\Contract\Router\MiddlewareInterface;
 use Raxos\RateLimit\{Rate, RateLimiter, RateLimitStatus};
-use Raxos\RateLimit\Store\RateLimiterStoreInterface;
-use Raxos\Router\Contract\MiddlewareInterface;
 use Raxos\Router\Request\Request;
 use Raxos\Router\Response\Response;
 use function max;

@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace Raxos\RateLimit;
 
-use Raxos\RateLimit\Error\RuntimeException;
+use Raxos\Contract\RateLimit\RateLimitExceptionInterface;
+use Raxos\RateLimit\Error\InvalidParameterException;
 
 /**
  * Class Rate
@@ -21,7 +22,7 @@ final readonly class Rate
      * @param int $interval
      * @param int $quota
      *
-     * @throws RuntimeException
+     * @throws RateLimitExceptionInterface
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.0
      */
@@ -31,11 +32,11 @@ final readonly class Rate
     )
     {
         if ($this->interval <= 0) {
-            throw RuntimeException::invalidParameter('Interval must be greater than 0.');
+            throw new InvalidParameterException('Interval must be greater than 0.');
         }
 
         if ($this->quota <= 0) {
-            throw RuntimeException::invalidParameter('Quota must be greater than 0.');
+            throw new InvalidParameterException('Quota must be greater than 0.');
         }
     }
 
@@ -45,7 +46,7 @@ final readonly class Rate
      * @param int $quota
      *
      * @return self
-     * @throws RuntimeException
+     * @throws RateLimitExceptionInterface
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.0
      */
@@ -61,7 +62,7 @@ final readonly class Rate
      * @param int $quota
      *
      * @return self
-     * @throws RuntimeException
+     * @throws RateLimitExceptionInterface
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.0
      */
@@ -76,7 +77,7 @@ final readonly class Rate
      * @param int $quota
      *
      * @return self
-     * @throws RuntimeException
+     * @throws RateLimitExceptionInterface
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.0
      */
@@ -92,7 +93,7 @@ final readonly class Rate
      * @param int $quota
      *
      * @return self
-     * @throws RuntimeException
+     * @throws RateLimitExceptionInterface
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.0
      */
@@ -107,7 +108,7 @@ final readonly class Rate
      * @param int $quota
      *
      * @return self
-     * @throws RuntimeException
+     * @throws RateLimitExceptionInterface
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.0
      */
@@ -123,7 +124,7 @@ final readonly class Rate
      * @param int $quota
      *
      * @return self
-     * @throws RuntimeException
+     * @throws RateLimitExceptionInterface
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.0
      */
@@ -138,7 +139,7 @@ final readonly class Rate
      * @param int $quota
      *
      * @return self
-     * @throws RuntimeException
+     * @throws RateLimitExceptionInterface
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.0
      */
@@ -154,7 +155,7 @@ final readonly class Rate
      * @param int $quota
      *
      * @return self
-     * @throws RuntimeException
+     * @throws RateLimitExceptionInterface
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.0
      */
