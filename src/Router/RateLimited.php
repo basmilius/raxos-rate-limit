@@ -6,9 +6,8 @@ namespace Raxos\RateLimit\Router;
 use Closure;
 use Raxos\Contract\RateLimit\RateLimiterStoreInterface;
 use Raxos\Contract\Router\MiddlewareInterface;
+use Raxos\Http\{HttpRequest, HttpResponse};
 use Raxos\RateLimit\{Rate, RateLimiter, RateLimitStatus};
-use Raxos\Router\Request\Request;
-use Raxos\Router\Response\Response;
 use function max;
 
 /**
@@ -45,7 +44,7 @@ abstract readonly class RateLimited implements MiddlewareInterface
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.16
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(HttpRequest $request, Closure $next): HttpResponse
     {
         $status = $this->rateLimiter->getStatus($this->getKey());
 
@@ -56,10 +55,10 @@ abstract readonly class RateLimited implements MiddlewareInterface
         }
 
         return $response
-            ->withHeader('ratelimit-limit', (string)$status->rate->quota)
-            ->withHeader('ratelimit-remaining', (string)max(0, $status->rate->quota - $status->operations))
-            ->withHeader('ratelimit-reset', (string)$status->ttl)
-            ->withHeader('retry-after', (string)$status->ttl);
+            ->header('ratelimit-limit', (string)$status->rate->quota)
+            ->header('ratelimit-remaining', (string)max(0, $status->rate->quota - $status->operations))
+            ->header('ratelimit-reset', (string)$status->ttl)
+            ->header('retry-after', (string)$status->ttl);
     }
 
     /**
@@ -76,10 +75,10 @@ abstract readonly class RateLimited implements MiddlewareInterface
      *
      * @param RateLimitStatus $status
      *
-     * @return Response
+     * @return HttpResponse
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.16
      */
-    protected abstract function getResponse(RateLimitStatus $status): Response;
+    protected abstract function getResponse(RateLimitStatus $status): HttpResponse;
 
 }
