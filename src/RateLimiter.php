@@ -64,8 +64,7 @@ final readonly class RateLimiter
         $operations = $this->store->getOperations($key);
 
         if ($increment && $operations < $this->rate->quota) {
-            $this->store->updateOperations($key, $this->rate->interval);
-            ++$operations;
+            $operations = $this->store->updateOperations($key, $this->rate->interval);
         }
 
         return new RateLimitStatus($operations, $this->rate, $this->store->getTTL($key));
