@@ -13,7 +13,7 @@ use Raxos\RateLimit\Error\LimitExceededException;
  * @package Raxos\RateLimit
  * @since 1.0.0
  */
-readonly class RateLimiter
+final readonly class RateLimiter
 {
 
     /**
@@ -63,7 +63,7 @@ readonly class RateLimiter
         $key = $this->getKey($key);
         $operations = $this->store->getOperations($key);
 
-        if ($increment && $operations <= $this->rate->quota) {
+        if ($increment && $operations < $this->rate->quota) {
             $this->store->updateOperations($key, $this->rate->interval);
             ++$operations;
         }

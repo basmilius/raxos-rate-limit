@@ -17,7 +17,7 @@ use function max;
  * @package Raxos\RateLimit\Store
  * @since 1.0.0
  */
-readonly class RedisRateLimiterStore implements RateLimiterStoreInterface
+final readonly class RedisRateLimiterStore implements RateLimiterStoreInterface
 {
 
     /**

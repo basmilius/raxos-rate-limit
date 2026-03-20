@@ -54,11 +54,16 @@ abstract readonly class RateLimited implements MiddlewareInterface
             $response = $next($request);
         }
 
-        return $response
+        $response = $response
             ->header('ratelimit-limit', (string)$status->rate->quota)
             ->header('ratelimit-remaining', (string)max(0, $status->rate->quota - $status->operations))
-            ->header('ratelimit-reset', (string)$status->ttl)
-            ->header('retry-after', (string)$status->ttl);
+            ->header('ratelimit-reset', (string)$status->ttl);
+
+        if ($status->exceeded) {
+            $response = $response->header('retry-after', (string)$status->ttl);
+        }
+
+        return $response;
     }
 
     /**
