@@ -68,13 +68,18 @@ final readonly class RedisRateLimiterStore implements RateLimiterStoreInterface
     public function updateOperations(string $key, int $interval): int
     {
         $key = $this->getKey($key);
-        $operations = $this->redis->incr($key);
 
-        if ($operations === 1) {
-            $this->redis->expire($key, $interval);
-        }
-
-        return $operations;
+        return (int)$this->redis->eval(
+            <<<'LUA'
+            local ops = redis.call('INCR', KEYS[1])
+            if ops == 1 then
+                redis.call('EXPIRE', KEYS[1], ARGV[1])
+            end
+            return ops
+            LUA,
+            [$key],
+            [$interval]
+        );
     }
 
     /**
