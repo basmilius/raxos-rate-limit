@@ -61,10 +61,11 @@ final readonly class RateLimiter
     public function getStatus(string $key, bool $increment = true): RateLimitStatus
     {
         $key = $this->getKey($key);
-        $operations = $this->store->getOperations($key);
 
-        if ($increment && $operations < $this->rate->quota) {
+        if ($increment) {
             $operations = $this->store->updateOperations($key, $this->rate->interval);
+        } else {
+            $operations = $this->store->getOperations($key);
         }
 
         return new RateLimitStatus($operations, $this->rate, $this->store->getTTL($key));
