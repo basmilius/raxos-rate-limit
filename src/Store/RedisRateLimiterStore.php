@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Raxos\RateLimit\Store;
 
 use JetBrains\PhpStorm\Pure;
-use Raxos\Cache\Redis\{RedisCache, RedisTaggedCache};
+use Raxos\Cache\Redis\RedisCache;
 use Raxos\Contract\Cache\RedisCacheExceptionInterface;
 use Raxos\Contract\RateLimit\RateLimiterStoreInterface;
 use function ceil;
@@ -23,14 +23,14 @@ final readonly class RedisRateLimiterStore implements RateLimiterStoreInterface
     /**
      * RedisRateLimiterStore constructor.
      *
-     * @param RedisCache|RedisTaggedCache $redis
+     * @param RedisCache $redis
      * @param string $keyBase
      *
      * @author Bas Milius <bas@mili.us>
-     * @since 1.0.0
+     * @since 3.2.0
      */
     public function __construct(
-        protected RedisCache|RedisTaggedCache $redis,
+        protected RedisCache $redis,
         protected string $keyBase = 'ratelimit:'
     ) {}
 
