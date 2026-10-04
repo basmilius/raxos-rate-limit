@@ -19,7 +19,7 @@ Quotas stored in Redis for application operations and Raxos Router endpoints.
 Requires PHP 8.5 or later. Composer checks the remaining package and extension dependencies declared in [composer.json](composer.json).
 
 ```sh
-composer require "raxos/rate-limit:^3.2"
+composer require "raxos/rate-limit:^3.3"
 ```
 
 ## Usage
@@ -66,3 +66,5 @@ See [Testing Raxos](https://github.com/basmilius/raxos/blob/main/TESTING.md) for
 ## License
 
 [MIT](LICENSE). Copyright (c) 2017 - present Bas Milius.
+
+See [atomic rate-limit snapshots](https://raxos.dev/rate-limit/atomic-snapshots) for the optional APIs and their lifetime or transport guarantees.

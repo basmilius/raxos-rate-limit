@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace Raxos\RateLimit;
 
-use Raxos\Contract\RateLimit\{RateLimiterStoreInterface, RateLimitExceptionInterface};
+use Raxos\Contract\RateLimit\RateLimiterSnapshotStoreInterface;
+use Raxos\Contract\RateLimit\RateLimiterStoreInterface;
+use Raxos\Contract\RateLimit\RateLimitExceptionInterface;
 use Raxos\RateLimit\Error\LimitExceededException;
 
 /**
@@ -15,7 +17,6 @@ use Raxos\RateLimit\Error\LimitExceededException;
  */
 final readonly class RateLimiter
 {
-
     /**
      * RateLimiter constructor.
      *
@@ -28,7 +29,9 @@ final readonly class RateLimiter
     public function __construct(
         public Rate $rate,
         public RateLimiterStoreInterface $store
-    ) {}
+    )
+    {
+    }
 
     /**
      * Checks if the rate limit is exceeded.
@@ -58,9 +61,18 @@ final readonly class RateLimiter
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.0
      */
-    public function getStatus(string $key, bool $increment = true): RateLimitStatus
+    public function getStatus(
+        string $key,
+        bool $increment = true
+    ): RateLimitStatus
     {
         $key = $this->getKey($key);
+
+        if ($this->store instanceof RateLimiterSnapshotStoreInterface) {
+            $snapshot = $this->store->snapshot($key, $this->rate->interval, $increment);
+
+            return new RateLimitStatus($snapshot['operations'], $this->rate, $snapshot['ttl']);
+        }
 
         if ($increment) {
             $operations = $this->store->updateOperations($key, $this->rate->interval);
@@ -86,5 +98,4 @@ final readonly class RateLimiter
 
         return "{$key}:{$interval}";
     }
-
 }
