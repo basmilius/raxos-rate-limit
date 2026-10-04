@@ -17,6 +17,7 @@ use Raxos\RateLimit\Error\LimitExceededException;
  */
 final readonly class RateLimiter
 {
+
     /**
      * RateLimiter constructor.
      *
@@ -96,4 +97,5 @@ final readonly class RateLimiter
 
         return "{$key}:{$interval}";
     }
+
 }

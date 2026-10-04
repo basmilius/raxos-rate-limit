@@ -2,9 +2,9 @@
 declare(strict_types=1);
 
 use Raxos\Cache\Redis\RedisCache;
-use Raxos\RateLimit\Error\InvalidParameterException;
-use Raxos\RateLimit\Rate;
-use Raxos\RateLimit\RateLimiter;
+use Raxos\Contract\RateLimit\RateLimiterStoreInterface;
+use Raxos\RateLimit\{Rate, RateLimiter};
+use Raxos\RateLimit\Error\{InvalidParameterException, LimitExceededException};
 use Raxos\RateLimit\Store\RedisRateLimiterStore;
 
 it('rejects invalid quotas and intervals', function (): void {
@@ -37,17 +37,17 @@ it('increments atomically and retains the original expiry across requests', func
 });
 
 it('uses the interval-specific key and throws only after the quota is exceeded', function (): void {
-    $store = $this->createMock(Raxos\Contract\RateLimit\RateLimiterStoreInterface::class);
+    $store = $this->createMock(RateLimiterStoreInterface::class);
     $store->expects($this->exactly(3))->method('updateOperations')->with('client:60', 60)->willReturnOnConsecutiveCalls(1, 2, 3);
     $store->expects($this->exactly(3))->method('getTTL')->with('client:60')->willReturn(42);
     $limiter = new RateLimiter(new Rate(60, 2), $store);
     $limiter->checkLimited('client');
     $limiter->checkLimited('client');
-    expect(fn(): mixed => $limiter->checkLimited('client'))->toThrow(Raxos\RateLimit\Error\LimitExceededException::class);
+    expect(fn(): mixed => $limiter->checkLimited('client'))->toThrow(LimitExceededException::class);
 });
 
 it('reads a status without incrementing operations', function (): void {
-    $store = $this->createMock(Raxos\Contract\RateLimit\RateLimiterStoreInterface::class);
+    $store = $this->createMock(RateLimiterStoreInterface::class);
     $store->expects($this->never())->method('updateOperations');
     $store->expects($this->once())->method('getOperations')->with('client:30')->willReturn(0);
     $store->method('getTTL')->willReturn(0);

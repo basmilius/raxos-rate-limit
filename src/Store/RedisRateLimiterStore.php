@@ -22,6 +22,7 @@ use function max;
  */
 final readonly class RedisRateLimiterStore implements RateLimiterSnapshotStoreInterface
 {
+
     /**
      * RedisRateLimiterStore constructor.
      *
@@ -38,6 +39,7 @@ final readonly class RedisRateLimiterStore implements RateLimiterSnapshotStoreIn
 
     /**
      * {@inheritdoc}
+     *
      * @throws RedisCacheExceptionInterface
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.0
@@ -49,6 +51,7 @@ final readonly class RedisRateLimiterStore implements RateLimiterSnapshotStoreIn
 
     /**
      * {@inheritdoc}
+     *
      * @throws RedisCacheExceptionInterface
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.0
@@ -63,6 +66,7 @@ final readonly class RedisRateLimiterStore implements RateLimiterSnapshotStoreIn
 
     /**
      * {@inheritdoc}
+     *
      * @throws RedisCacheExceptionInterface
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.0
@@ -141,4 +145,5 @@ final readonly class RedisRateLimiterStore implements RateLimiterSnapshotStoreIn
     {
         return $this->keyBase . $key;
     }
+
 }

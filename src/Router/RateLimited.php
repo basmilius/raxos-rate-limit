@@ -41,6 +41,7 @@ abstract readonly class RateLimited implements MiddlewareInterface
 
     /**
      * {@inheritdoc}
+     *
      * @author Bas Milius <bas@mili.us>
      * @since 1.0.16
      */

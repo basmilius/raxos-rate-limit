@@ -33,6 +33,7 @@ it('returns one atomic snapshot per operation and does not increment read-only c
         test()->markTestSkipped('Redis is not configured.');
     }
     $redis = new class('unit', getenv('RAXOS_REDIS_HOST'), (int)(getenv('RAXOS_REDIS_PORT') ?: 0)) extends RedisCache {
+
         public int $evaluations = 0;
 
         public function eval(string $script, array $keys = [], array $args = []): mixed
@@ -41,6 +42,7 @@ it('returns one atomic snapshot per operation and does not increment read-only c
 
             return parent::eval($script, $keys, $args);
         }
+
     };
     $prefix = 'raxos-unit-snapshot:' . bin2hex(random_bytes(8)) . ':';
     $store = new RedisRateLimiterStore($redis, $prefix);
