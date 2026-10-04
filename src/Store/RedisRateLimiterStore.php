@@ -34,9 +34,7 @@ final readonly class RedisRateLimiterStore implements RateLimiterSnapshotStoreIn
     public function __construct(
         protected RedisCache $redis,
         protected string $keyBase = 'ratelimit:'
-    )
-    {
-    }
+    ) {}
 
     /**
      * {@inheritdoc}
@@ -95,6 +93,7 @@ final readonly class RedisRateLimiterStore implements RateLimiterSnapshotStoreIn
      * @param string $key
      * @param int $interval
      * @param bool $increment
+     *
      * @return array{operations:int, ttl:int}
      * @throws RedisCacheExceptionInterface
      * @author Bas Milius <bas@mili.us>

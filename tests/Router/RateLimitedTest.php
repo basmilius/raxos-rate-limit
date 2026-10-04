@@ -13,12 +13,12 @@ it('runs permitted handlers and short-circuits exceeded requests with rate heade
     $store = $this->createMock(RateLimiterStoreInterface::class);
     $store->expects($this->once())->method('updateOperations')->with('unit:60', 60)->willReturn($operations);
     $store->expects($this->once())->method('getTTL')->with('unit:60')->willReturn(42);
-    $middleware = new readonly class(Rate::minute(2), $store) extends RateLimited
-    {
+    $middleware = new readonly class(Rate::minute(2), $store) extends RateLimited {
         protected function getKey(): string
         {
             return 'unit';
         }
+
         protected function getResponse(RateLimitStatus $status): HttpResponse
         {
             return new NoContentHttpResponse()->responseCode(HttpResponseCode::TOO_MANY_REQUESTS);
@@ -27,6 +27,7 @@ it('runs permitted handlers and short-circuits exceeded requests with rate heade
     $calls = 0;
     $response = $middleware->handle(HttpRequest::create(), function () use (&$calls): HttpResponse {
         $calls++;
+
         return new NoContentHttpResponse();
     });
     expect($calls)->toBe($exceeded ? 0 : 1)
